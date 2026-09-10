@@ -65,7 +65,7 @@
         canvas.width = Math.round(width * scale);
         canvas.height = Math.round(height * scale);
         context.setTransform(scale, 0, 0, scale, 0, 0);
-        count = Math.min(400, Math.max(32, Math.round(width * height / 6000)));
+        count = Math.min(600, Math.max(48, Math.round(width * height / 4000)));
 
         // Three of every twenty stars have a noticeable twinkle.
         while (stars.length < count) {
@@ -81,7 +81,7 @@
             radius: random(0.3, 0.75),
             opacity: noticeable ? random(0.2, 0.26) : random(0.06, 0.18),
             amplitude: noticeable
-              ? random(0.1, 0.14) * (1 + 0.35 * upperEmphasis)
+              ? random(0.1, 0.14) * (1 + 0.35 * upperEmphasis) * (1 + 0.5 * upperEmphasis)
               : random(0.002, 0.006),
             phase: random(0, tau),
             frequency: 1 / random(10, 20)
@@ -99,8 +99,8 @@
           const variation = reducedMotion.matches ? 0 :
             Math.sin(seconds * tau * star.frequency + star.phase) * star.amplitude;
           // Stronger highlights at the top, with a quiet lower sky.
-          const brightness = 1.2 + 1.4 * Math.pow(1 - star.y, 2);
-          context.globalAlpha = Math.min(0.85, (star.opacity + variation) * brightness);
+          const brightness = 1.2 + 2.1 * Math.pow(1 - star.y, 2);
+          context.globalAlpha = Math.max(0, Math.min(0.95, (star.opacity + variation) * brightness));
           context.beginPath();
           context.arc(star.x * width, star.y * height, star.radius, 0, tau);
           context.fill();
